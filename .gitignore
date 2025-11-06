@@ -1,0 +1,48 @@
+# Archivos con credenciales reales
+CREDENCIALES-SMS-CORRECTAS.md
+DEPLOYMENT-PRODUCCION-EXITOSO.md
+**/credenciales*.txt
+**/passwords*.txt
+
+# Archivos de entorno
+.env
+.env.local
+.env.production
+*.env
+
+# Logs y debugging
+*.log
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Archivos de testing temporal
+/tmp/
+*.tmp
+*.bak
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de backup Odoo
+*.bak
+*.backup
+
+# Archivos Python compilados
+__pycache__/
+*.pyc
+*.pyo
+
+# Archivos de distribución
+dist/
+build/
+*.egg-info/
