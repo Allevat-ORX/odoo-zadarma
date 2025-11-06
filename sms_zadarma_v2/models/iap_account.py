@@ -126,6 +126,13 @@ class IapAccount(models.Model):
             if vals.get('zadarma_user_key') and vals.get('zadarma_secret_key'):
                 vals['provider'] = 'sms_api_zadarma'
 
+            # Auto-uncheck other defaults if this one is marked as default
+            if vals.get('is_default_sms'):
+                self.search([
+                    ('provider', 'like', 'sms_api'),
+                    ('is_default_sms', '=', True)
+                ]).write({'is_default_sms': False})
+
         return super().create(vals_list)
 
     def write(self, vals):
@@ -134,5 +141,13 @@ class IapAccount(models.Model):
             for rec in self:
                 if rec.zadarma_user_key and rec.zadarma_secret_key:
                     vals['provider'] = 'sms_api_zadarma'
+
+        # Auto-uncheck other defaults if this one is marked as default
+        if vals.get('is_default_sms'):
+            self.search([
+                ('provider', 'like', 'sms_api'),
+                ('is_default_sms', '=', True),
+                ('id', 'not in', self.ids)
+            ]).write({'is_default_sms': False})
 
         return super().write(vals)

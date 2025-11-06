@@ -111,6 +111,13 @@ class IapAccount(models.Model):
             if vals.get('labsmobile_username') and vals.get('labsmobile_token'):
                 vals['provider'] = 'sms_api_labsmobile'
 
+            # Auto-uncheck other defaults if this one is marked as default
+            if vals.get('is_default_sms'):
+                self.search([
+                    ('provider', 'like', 'sms_api'),
+                    ('is_default_sms', '=', True)
+                ]).write({'is_default_sms': False})
+
         return super().create(vals_list)
 
     def write(self, vals):
@@ -119,5 +126,13 @@ class IapAccount(models.Model):
             for rec in self:
                 if rec.labsmobile_username and rec.labsmobile_token:
                     vals['provider'] = 'sms_api_labsmobile'
+
+        # Auto-uncheck other defaults if this one is marked as default
+        if vals.get('is_default_sms'):
+            self.search([
+                ('provider', 'like', 'sms_api'),
+                ('is_default_sms', '=', True),
+                ('id', 'not in', self.ids)
+            ]).write({'is_default_sms': False})
 
         return super().write(vals)
